@@ -1,6 +1,5 @@
 
 #include <LoRaHomeNode.h>
-#include <LoRaHomeFrame.h>
 #include <LoRa.h>
 #include <LoRaNode.h>
 #include <ArduinoJson.h>
@@ -256,12 +255,6 @@ void LoRaHomeNode::receiveLoraMessage()
     DEBUG_MSG("--- ignore message, not the right network ID");
     return;
   }
-  // if (lhf.messageType != LH_MSG_TYPE_GW_MSG_ACK)
-  // {
-  //   DEBUG_MSG("--- ignore message, not a gateway message with Ack");
-  //   return;
-  // }
-  // No error we can process the message
   DEBUG_MSG("--- message received");
   // serializeJson(jsonDoc, Serial);
   uint8_t nodeInvoked = lhf.nodeIdRecipient;
@@ -271,7 +264,6 @@ void LoRaHomeNode::receiveLoraMessage()
     // I am the one!
     DEBUG_MSG("--- I am node invoked");
     // parse JSON message
-    StaticJsonDocument<LH_FRAME_MAX_PAYLOAD_SIZE> jsonDoc;
     DeserializationError error = deserializeJson(jsonDoc, lhf.jsonPayload);
     // deserializeJson error
     if (error)
